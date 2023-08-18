@@ -1,0 +1,41 @@
+{
+  "env": { // Xác định môi trường cho mã nguồn của bạn
+    "browser": true, // Cho phép sử dụng các biến trình duyệt như document, window
+    "node": true, // Cho phép sử dụng các biến của Node.js như require
+    "es6": true // Cho phép sử dụng các tính năng của ECMAScript 6
+  },
+  // Kế thừa cấu hình từ các nguồn đã định nghĩa
+  "extends": [
+    "eslint:recommended", // Kế thừa cấu hình mặc định từ ESLint
+    "prettier" // Sử dụng cấu hình prettier để đảm bảo mã luôn đúng định dạng
+  ],
+  "plugins": ["react", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    // Sử dụng dấu chấm phẩy sau mỗi câu lệnh
+    "semi": ["error", "always"],
+    // Sử dụng dấu ngoặc đơn cho chuỗi
+    "quotes": ["warn", "single"],
+    // Thụt đầu dòng 2 khoảng trắng
+    "indent": ["error", 2],
+    // Tắt cảnh báo về biến không sử dụng mặc định của ESLint
+    "no-unused-vars": "off",
+    // Tắt cảnh báo về việc sử dụng console.log()
+    "no-console": "off"
+    // Áp dụng quy tắc kiểm tra sử dụng Hooks
+    // "react-hooks/rules-of-hooks": "error",
+    // // Kiểm tra dependency của effect trong Hooks
+    // "react-hooks/exhaustive-deps": "warn"
+  },
+  "ignorePatterns": [
+    "webpack.config.js",
+    "reportWebVitals.js",
+    "*.test.js"
+  ]
+}
