@@ -1,70 +1,139 @@
-# Getting Started with Create React App
+### [codeaday.pro.vn] Tối Ưu Hóa Mã Nguồn: Sử Dụng Code Linter, Formatter và Husky trong Dự Án React. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**1. Code Linter:**
 
-## Available Scripts
+Code linter là công cụ giúp kiểm tra mã nguồn của bạn để tìm lỗi cú pháp, quy tắc lập trình không tốt và tiềm năng gây lỗi. Một số code linter phổ biến trong cộng đồng React bao gồm ESLint và TSLint (dành cho TypeScript).
 
-In the project directory, you can run:
+**Cài Đặt và Cấu Hình ESLint:**
 
-### `npm start`
+1. Bắt đầu bằng việc cài đặt ESLint thông qua npm hoặc yarn:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+   ```
+   npm install eslint --save-dev
+   ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. Tạo tập tin cấu hình `.eslintrc.js` trong thư mục gốc của dự án:
 
-### `npm test`
+    Dưới đây là một file ví dụ cụ thể:
+```json
+{
+  "env": {
+    "browser": true, // Cho phép sử dụng các biến trình duyệt như document, window
+    "node": true, // Cho phép sử dụng các biến của Node.js như require
+    "es6": true // Cho phép sử dụng các tính năng của ECMAScript 6
+  },
+  "extends": [
+    "eslint:recommended", // Kế thừa cấu hình mặc định từ ESLint
+    "prettier" // Sử dụng cấu hình prettier để đảm bảo mã luôn đúng định dạng
+  ],
+  "plugins": ["react", "prettier"], // Sử dụng các plugin react và prettier
+  "parserOptions": {
+    "ecmaVersion": 2018, // Sử dụng phiên bản ECMAScript 2018
+    "sourceType": "module", // Sử dụng kiểu module để sử dụng các tính năng ES6 module
+    "ecmaFeatures": {
+      "jsx": true // Cho phép sử dụng JSX trong React
+    }
+  },
+  "rules": {
+    "semi": ["error", "always"], // Yêu cầu sử dụng dấu chấm phẩy sau mỗi câu lệnh
+    "quotes": ["warn", "single"], // Yêu cầu sử dụng dấu ngoặc đơn cho chuỗi
+    "indent": ["error", 2], // Yêu cầu thụt đầu dòng 2 khoảng trắng
+    "no-unused-vars": "off", // Tắt cảnh báo về biến không sử dụng mặc định của ESLint
+    "no-console": "off" // Tắt cảnh báo về việc sử dụng console.log()
+  },
+  "ignorePatterns": [
+    "webpack.config.js", // Bỏ qua tệp webpack.config.js
+    "*.test.js" // Bỏ qua tất cả các tệp test.js
+  ]
+}
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**2. Code Formatter (Prettier):**
 
-### `npm run build`
+Prettier là một công cụ giúp định dạng mã nguồn một cách tự động theo các quy tắc định sẵn. Điều này giúp đảm bảo rằng mã luôn được định dạng thống nhất.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Cài Đặt và Cấu Hình Prettier:**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Cài đặt Prettier thông qua npm hoặc yarn:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```
+   npm install prettier --save-dev
+   ```
 
-### `npm run eject`
+2. Tạo tập tin cấu hình `.prettierrc` hoặc thêm khai báo trong `package.json`:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   ```json
+   {
+   "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "printWidth": 80,
+    "trailingComma": "es5",
+    "arrowParens": "always"
+   }
+   ```
+Lúc này sau khi đã cài đặt xong và việc code sẽ được giám sát bởi eslint. Nhưng vẫn còn thiếu thiếu vì khi vẫn còn chốt chặn cuối cùng để code được sạch đẹp trước khi được push lên repos. Tiếp tục nào...
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**3. Husky và lint-staged:**
+1. **Cài Đặt Husky và lint-staged:**
+ ```json
+   npm install lint-staged husky --save-dev
+   ```
+2. **Cấu Hình Husky và Lệnh Hook:**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Sử dụng Husky CLI để thêm hook pre-commit vào dự án và chỉ định lệnh bạn muốn chạy:
+```
+npx husky add .husky/pre-commit "npx lint-staged"
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3. **Cấu Hình lint-staged:**
 
-## Learn More
+Thêm cấu hình lint-staged vào tệp package.json để chỉ định các tệp bạn muốn kiểm tra và các lệnh bạn muốn chạy cho chúng.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+{
+  "name": "your-project-name",
+  "version": "1.0.0",
+  "scripts": {
+    // ... các scripts khác
+    "lint": "eslint",
+    "format": "prettier --write \"src/**/*.js\" \"src/**/*.jsx\"",
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": ["npm run lint", "npm run format"]
+  },
+  // ...
+}
+```
+Với cấu hình lint-staged như trên khi bạn commit nếu phạm rule thì sẽ bị báo lỗi và không cho commit.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+***Bonus***: Nếu bạn muốn tất cả tự động khi commit thì lệnh sau sẽ chạy và tự động tìm lỗi và fix lỗi eslint luôn. Ảo diệu chưa 😎
+```json
+ "lint-staged": {
+    "src/**/*.{js,jsx}": [ 
+    "eslint --fix",
+    "prettier --write",
+    "git add"]
+  }
+```
 
-### Code Splitting
+3. **Chạy Lại Cấu Hình Husky:**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Chạy lại cấu hình Husky để đảm bảo tệp .husky/pre-commit đã được tạo:
 
-### Analyzing the Bundle Size
+```
+npx husky install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Bây giờ, khi bạn commit mã, Husky sẽ tự động chạy lint-staged, và lint-staged sẽ chỉ chạy kiểm tra và định dạng cho những tệp đã thay đổi, giúp đảm bảo mã của bạn tuân theo các tiêu chuẩn và quy tắc kiểm tra được xác định.
 
-### Making a Progressive Web App
+ ---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+***Kết Luận***
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Sử dụng code linter và formatter là một phần quan trọng của quy trình phát triển để đảm bảo mã nguồn luôn đáp ứng các quy tắc lập trình và dễ đọc.
